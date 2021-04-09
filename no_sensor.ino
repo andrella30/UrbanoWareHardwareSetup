@@ -1,7 +1,7 @@
 #ifndef MASTER
 
 #include <MQUnifiedsensor.h>
-
+ 
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 #include <Adafruit_MPU6050.h>
@@ -68,8 +68,6 @@ void airQuality(){
 
 void indiceUv(){
   int leitura_porta = analogRead(4); 
-//  Serial.print("Valor porta: ");
-//  Serial.println(leitura_porta);
   if (leitura_porta <= 10) {
      data.indiceUV = 0;
   } else if (leitura_porta > 10 && leitura_porta <= 46) {
@@ -103,23 +101,23 @@ Data readData() {
   airQuality();
   Serial.print("Qualidade do ar: ");
   Serial.println(data.airIndex);
-  //Serial.println(data.cO);
-  //Serial.println(data.cO2);
-  //Serial.println(data.tolueno);
-  //Serial.println(data.nH4);
+  Serial.println(data.cO);
+  Serial.println(data.cO2);
+  Serial.println(data.tolueno);
+  Serial.println(data.nH4);
 
   //Indice de Radiação
   indiceUv();
   Serial.print("Indice UV: ");
   Serial.println(data.indiceUV);
 
-  //Localização do buraco
-//  Serial.print("ID buraco: ");
-//  Serial.println(data.IdBur);
-//  Serial.print("LatitudeBur: ");
-//  Serial.println(data.latBur, 8);
-//  Serial.print("LongitudeBur: ");
-//  Serial.println(data.lngBur, 8);
+  Localização do buraco
+  Serial.print("ID buraco: ");
+  Serial.println(data.IdBur);
+  Serial.print("LatitudeBur: ");
+  Serial.println(data.latBur, 8);
+  Serial.print("LongitudeBur: ");
+  Serial.println(data.lngBur, 8);
 
   data.temperature = bme.readTemperature();
   Serial.print("Temepratura: ");
@@ -146,12 +144,11 @@ void setup() {
   Serial.begin(115200);
 
   setupLora();
-  //setupGps();
+  setupGps();
   calibrateMQ135();
 
   if (!mpu.begin()) {
     Serial.println("Failed to find MPU6050");
-   // while (1) 
   }
 
    if (!bme.begin(0x76)) {
@@ -187,26 +184,18 @@ void loop() {
 
    sensors_event_t a, g, temp;
    mpu.getEvent(&a, &g, &temp);
-
    AcZ[count] = a.acceleration.z;
-   //Serial.println(AcZ[count]);
+   
    delay(200);
    
    sensors_event_t a1, g1, temp1;
-   mpu.getEvent(&a1, &g1, &temp1);
-   
+   mpu.getEvent(&a1, &g1, &temp1);   
    AcZ[count + 1] = a1.acceleration.z;
-   //Serial.println(AcZ[count + 1]);
+
 
    if(abs(AcZ[count]) > abs((AcZ[count + 1] * 1.2 ))){
       id++;
-      Serial.println("BURACO");
-      Serial.println("VETOR COMPLETO");
-        for(int aux =0; aux < 5; aux ++){
-          
-          Serial.println(AcZ[aux]);
-          
-        }
+
       Serial.println("================");
       Serial.println(abs(AcZ[count])); Serial.print(" ");
       Serial.println(abs((AcZ[count + 1] * 1.8 ))); 
@@ -217,15 +206,11 @@ void loop() {
    }
       
    if(count > 4){
-
     count = 0;
-
    }
 
    count++;
    delay(100);    
-
-  
 }
 
 static void smartDelay(unsigned long ms){

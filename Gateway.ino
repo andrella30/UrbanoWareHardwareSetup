@@ -75,14 +75,32 @@ void onReceive(int packetSize) {
 
     Firebase.setFloat("sensor01/indiceUv", data.indiceUV);
 
-//    Firebase.setFloat("buracos/"+ data.IdBur + "/latitudeBuracos", data.latBur);
-//    Firebase.setFloat("buracos/" + data.IdBur +"/longitudeBuracos", data.lngBur);  
+    Firebase.setFloat("buracos/"+ String(data.IdBur) + "/latitudeBuracos", data.latBur);
+    Firebase.setFloat("buracos/" +String(data.IdBur) +"/longitudeBuracos", data.lngBur);  
     
   }
 
   if(String(sender, HEX) == "ff"){
     sensor = "Sensor02";
     Firebase.setFloat("sensor02/temperature", data.temperature);
+
+    Firebase.setFloat("sensor02/latitude", data.latitude);
+    Firebase.setFloat("sensor02/longitude",data.longitude);
+    
+    Firebase.setFloat("sensor02/temperature", data.temperature);
+    Firebase.setFloat("sensor02/umidade", data.humidity);
+    Firebase.setFloat("sensor02/pressao", data.pressure);
+    
+    Firebase.setFloat("sensor02/co", data.cO);
+    Firebase.setFloat("sensor02/co2", data.cO2);
+    Firebase.setFloat("sensor02/nh4", data.nH4);
+    Firebase.setFloat("sensor02/tolueno", data.tolueno);
+    Firebase.setFloat("sensor02/qualidadeAr", data.airIndex);
+
+    Firebase.setFloat("sensor02/indiceUv", data.indiceUV);
+
+    Firebase.setFloat("buracos/"+ String(data.IdBur) + "/latitudeBuracos", data.latBur);
+    Firebase.setFloat("buracos/" +String(data.IdBur) +"/longitudeBuracos", data.lngBur); 
   }
   
   Serial.println("Received from: " + sensor);
@@ -123,7 +141,6 @@ void onReceive(int packetSize) {
     
   Serial.println("RSSI: " + String(LoRa.packetRssi()));
   Serial.println("Snr: " + String(LoRa.packetSnr()));
-
   Serial.println("Packet Size: " + String(packetSize));
 
   Serial.println();
