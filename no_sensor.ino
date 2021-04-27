@@ -1,7 +1,6 @@
 #ifndef MASTER
 
-#include <MQUnifiedsensor.h>
- 
+#include <MQUnifiedsensor.h> 
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 #include <Adafruit_MPU6050.h>
@@ -95,9 +94,10 @@ void indiceUv(){
   } 
 }
 
+
 Data readData() {
 
-  //Qualidade do Ar
+   //Qualidade do Ar
   airQuality();
   Serial.print("Qualidade do ar: ");
   Serial.println(data.airIndex);
@@ -111,7 +111,7 @@ Data readData() {
   Serial.print("Indice UV: ");
   Serial.println(data.indiceUV);
 
-  Localização do buraco
+  //Localização do buraco
   Serial.print("ID buraco: ");
   Serial.println(data.IdBur);
   Serial.print("LatitudeBur: ");
@@ -140,6 +140,7 @@ Data readData() {
   smartDelay(3000);
   return data;
 }
+
 void setup() {
   Serial.begin(115200);
 
@@ -193,12 +194,9 @@ void loop() {
    AcZ[count + 1] = a1.acceleration.z;
 
 
-   if(abs(AcZ[count]) > abs((AcZ[count + 1] * 1.2 ))){
+   if(abs(AcZ[count]) > abs((AcZ[count + 1] * 1.8 ))){
       id++;
-
-      Serial.println("================");
-      Serial.println(abs(AcZ[count])); Serial.print(" ");
-      Serial.println(abs((AcZ[count + 1] * 1.8 ))); 
+      Serial.println("Buraco");
       data.IdBur = id;
       data.latBur = gps.location.lat();
       data.lngBur = gps.location.lng();

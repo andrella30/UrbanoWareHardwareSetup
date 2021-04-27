@@ -24,10 +24,6 @@ void setup() {
 }
 
 void loop() {
-   int pkt = LoRa.parsePacket();
-   if(pkt > 0) {
-    Serial.println("Packet Size função: " + String(pkt));
-   }
    onReceive(LoRa.parsePacket());
 }
 
